@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken');
 //json web tool used for secret communication between client and server :- create token
 const jwtSecret = "Secret$Client&Server"
 
-// create a user using : POST at "/api/auth/createuser" no login require
+//Route- 1: create a user using : POST at "/api/auth/createuser" no login require
 router.post('/createuser',[
 
   //here chekcing  of email name and password is valid or not 
@@ -21,7 +21,7 @@ router.post('/createuser',[
   async (req, res) => {
     console.log(req.body)
 
-    //validator check the validation of email name and password
+    //validator check the error of email name and password
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -56,9 +56,66 @@ router.post('/createuser',[
       res.json({ClientToken})  
 
     } catch (error) {
-      // console.error(error.message)
+      console.error(error.message)
       // error send as a response at status 500
-      res.status(500).send(error.message)
+      res.status(500).send("Internal Error Occured")
     }
   })
+
+
+
+
+
+
+
+  
+  //Routes-2: Login user using : POST at "/api/auth/login" no login require
+  router.post('/login',[
+
+    //here chekcing  of email only  is valid or not ... if email is wrong then program will not allow 
+    body('email',"Enter valid Email").isEmail(),
+    body('password',"Password cannot be blanck").exists(),
+    ], 
+    async (req, res) => {
+
+    //validator check the validation or error of email name and password
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // login data by user 
+    const {email,password} = req.body;
+    try {
+
+      //find email in database and compare that email by stored email
+      const user=await User.findOne({email})
+      if(!user){
+        res.status(400).json({error:"Please login with corret credentials"})
+        return
+      }
+      
+      //user password compare with stored password
+      const passwordComapre = await bcrypt.compare(password,user.password)
+      if(!passwordComapre){
+        res.status(400).json({error:"Please login with corret credentials"})
+      }
+
+      // send response in json file after creating user & creating token for client
+      const data= {
+        user:{
+          id:user.id
+        }
+      }
+      const ClientToken = jwt.sign(data, jwtSecret);
+      res.json({ClientToken}) 
+      
+    } catch (error) {
+      console.error(error.message)
+      // error send as a response at status 500
+      res.status(500).send("Internal Error Occured")
+    }
+     
+    })
+  
   module.exports=router
