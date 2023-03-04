@@ -3,6 +3,10 @@ const router = express.Router()
 const User = require("../models/User")
 const { body, validationResult } = require('express-validator');
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+
+//json web tool used for secret communication between client and server :- create token
+const jwtSecret = "Secret$Client&Server"
 
 // create a user using : POST at "/api/auth/createuser" no login require
 router.post('/createuser',[
@@ -32,18 +36,25 @@ router.post('/createuser',[
       }
 
       //generate salt and addition of bcrypt to secure password 
-      const salt = await bcrypt.getSalt(10); // generate 10 bit hash password
+      const salt = await bcrypt.genSaltSync(10) ; // generate 10 bit hash password
       const securePass = await bcrypt.hash(req.body.password,salt);
 
       // create  new user 
       user = await User.create({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: securePass
       })
 
-      // send response in json file after creating user 
-      res.json(user)    
+      // send response in json file after creating user & creating token for client
+      const data= {
+        user:{
+          id:user.id
+        }
+      }
+      const ClientToken = jwt.sign(data, jwtSecret);
+      res.json({ClientToken})  
+
     } catch (error) {
       // console.error(error.message)
       // error send as a response at status 500
