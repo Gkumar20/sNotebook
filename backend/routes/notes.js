@@ -5,6 +5,7 @@ var fetchuser = require('../middleware/fetchuser');
 const { body, validationResult } = require('express-validator');
 
 
+
 //Route- 1: fetch all notes  using : GET at "/api/notes/fetchallnotes"  login require
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
   try {
