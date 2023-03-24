@@ -68,7 +68,7 @@ function Notes() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" ref={refClose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={handleClick} >Save changes</button>
+                            <button disabled={note.etitle.length<5 || note.edescription.length<5} type="button" className="btn btn-primary" onClick={handleClick} >Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -76,6 +76,9 @@ function Notes() {
 
             <div className="row">
                 <h1>Your Notes</h1>
+                <div className="container mx-3">
+                {notes.length===0 && "No Notes available to Display"}
+                </div>
                 {notes.map((note) => {
                     return <NoteItem key={note._id} updateNote={updateNote} note={note} />;
                 })}

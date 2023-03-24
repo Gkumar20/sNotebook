@@ -15,7 +15,7 @@ const NoteState = (props) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json",  
         "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwMzU4Y2U5M2RkZWU2ODVmNTYwM2Q1In0sImlhdCI6MTY3Nzk0MTA1NX0.DV3pEymerIBmuBge28SayESQLcILuT-shgpv6xxnYDo"
       },
       
