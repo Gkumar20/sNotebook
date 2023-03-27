@@ -38,14 +38,15 @@ const Login = (props) => {
       }
     return (
         <div className='container '>
+        <h2 className='text-center'>Login to continue user sNotebook</h2>
             <div className="mainui top-0 start-50 translate-middle-x">
                 <input type="checkbox" id="chk" aria-hidden="true" />
-
+                
                 <div className="login">
                     <form className="form" onSubmit={handleSubmit}>
                         <label htmlFor="chk" aria-hidden="true">Log in</label>
-                        <input className="input" type="email" id='email' value={auth.email} onChange={onChange} name="email" placeholder="Email"  />
-                        <input className="input" type="password" id='password' value={auth.password} onChange={onChange} name="password" placeholder="Password"  />
+                        <input className="input" type="email" autoComplete="username" id='email' value={auth.email} onChange={onChange} name="email" placeholder="Email" minLength={5} required />
+                        <input className="input" type="password" autoComplete="current-password" id='password' value={auth.password} onChange={onChange} name="password" placeholder="Password" minLength={5} required />
                         <button type="submit" >Log in</button>
                     </form>
                 </div>
