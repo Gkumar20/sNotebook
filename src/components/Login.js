@@ -21,10 +21,10 @@ const Login = (props) => {
 
         const json = await response.json()
         console.log(json)
+        localStorage.setItem('token',json.ClientToken);
 
         if(json.success){
-            // redirect 
-            localStorage.setItem('token',json.authtoken);
+            //Save auth token & redirect 
             navigate('/');
             props.showAlert("Login Successfully","success")
         }else{

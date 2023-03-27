@@ -1,4 +1,5 @@
-import React, { useContext, useEffect,useState,useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import noteContext from "../context/notes/noteContext"
 import AddNotes from './AddNotes';
 import NoteItem from './NoteItem';
@@ -6,10 +7,15 @@ import NoteItem from './NoteItem';
 
 function Notes(props) {
     const context = useContext(noteContext)
-    const { notes, getNotes,editNotes } = context;
-    const [note, setnote] = useState({id:"", etitle:"",edescription:"",etag:""})
+    const { notes, getNotes, editNotes } = context;
+    const [note, setnote] = useState({ id: "", etitle: "", edescription: "", etag: "" })
+    let Navigate = useNavigate();
     useEffect(() => {
-        getNotes();
+        if (localStorage.getItem('token')) {
+            getNotes();
+        }else{
+            Navigate("/login")
+        }
         // eslint-disable-next-line
     }, [])
     const ref = useRef(null)
@@ -17,25 +23,25 @@ function Notes(props) {
 
     const updateNote = (currNote) => {
         ref.current.click();
-        setnote({id:currNote._id,etitle:currNote.title,edescription:currNote.description,etag:currNote.tag})
+        setnote({ id: currNote._id, etitle: currNote.title, edescription: currNote.description, etag: currNote.tag })
     }
 
     //run func due to click on submit button
-    const handleClick=(e)=>{
-        editNotes(note.id,note.etitle,note.edescription,note.etag);
+    const handleClick = (e) => {
+        editNotes(note.id, note.etitle, note.edescription, note.etag);
         refClose.current.click();
-        props.showAlert("updated Successfully","success")
-      }
-  
-      // run this function due to chnaging input
-      const handleChange=(element)=>{
+        props.showAlert("updated Successfully", "success")
+    }
+
+    // run this function due to chnaging input
+    const handleChange = (element) => {
         // note remain but overrite the value with the input value 
-        setnote({...note, [element.target.name]: element.target.value})
-      }
+        setnote({ ...note, [element.target.name]: element.target.value })
+    }
 
     return (
         <>
-            <AddNotes showAlert={props.showAlert}/>
+            <AddNotes showAlert={props.showAlert} />
 
             {/* to update the note using bootstapmodel  */}
             <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -69,7 +75,7 @@ function Notes(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" ref={refClose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button disabled={note.etitle.length<5 || note.edescription.length<5} type="button" className="btn btn-primary" onClick={handleClick} >Save changes</button>
+                            <button disabled={note.etitle.length < 5 || note.edescription.length < 5} type="button" className="btn btn-primary" onClick={handleClick} >Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -78,10 +84,10 @@ function Notes(props) {
             <div className="row">
                 <h1>Your Notes</h1>
                 <div className="container mx-3">
-                {notes.length===0 && "No Notes available to Display"}
+                    {notes.length === 0 && "No Notes available to Display"}
                 </div>
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert}/>;
+                    return <NoteItem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert} />;
                 })}
             </div>
         </>
