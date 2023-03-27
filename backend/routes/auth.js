@@ -30,11 +30,13 @@ router.post('/createuser', [
     }
 
     try {
+      let success = false;
       // check whether user email is unique on not means USER exist already or not 
       let user = await User.findOne({ email: req.body.email })
       console.log(user)
       if (user) {
-        return res.status(400).json({ error: "this email is already registered" })
+        success = false;
+        return res.status(400).json({success, error: "this email is already registered" })
       }
 
       //generate salt and addition of bcrypt to secure password 
@@ -55,7 +57,8 @@ router.post('/createuser', [
         }
       }
       const ClientToken = jwt.sign(data, jwtSecret);
-      res.json({ ClientToken })
+      success = true;
+      res.json({success, ClientToken })
 
     } catch (error) {
       console.error(error.message)
@@ -89,18 +92,20 @@ router.post('/login', [
     // login data by user 
     const { email, password } = req.body;
     try {
-
+      let success = false;
       //find email in database and compare that email by stored email
       const user = await User.findOne({ email })
       if (!user) {
-        res.status(400).json({ error: "Please login with corret credentials" })
+        success = false;
+        res.status(400).json({success, error: "Please login with corret credentials" })
         return
       }
 
       //user password compare with stored password
       const passwordComapre = await bcrypt.compare(password, user.password)
       if (!passwordComapre) {
-        res.status(400).json({ error: "Please login with corret credentials" })
+        success = false;
+        res.status(400).json({ success, error: "Please login with corret credentials" })
         return
       }
 
@@ -111,7 +116,8 @@ router.post('/login', [
         }
       }
       const ClientToken = jwt.sign(data, jwtSecret);
-      res.json({ ClientToken })
+      success = true;
+      res.json({ success,ClientToken })
 
     } catch (error) {
       console.error(error.message)

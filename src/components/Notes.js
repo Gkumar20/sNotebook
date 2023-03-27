@@ -4,7 +4,7 @@ import AddNotes from './AddNotes';
 import NoteItem from './NoteItem';
 
 
-function Notes() {
+function Notes(props) {
     const context = useContext(noteContext)
     const { notes, getNotes,editNotes } = context;
     const [note, setnote] = useState({id:"", etitle:"",edescription:"",etag:""})
@@ -24,6 +24,7 @@ function Notes() {
     const handleClick=(e)=>{
         editNotes(note.id,note.etitle,note.edescription,note.etag);
         refClose.current.click();
+        props.showAlert("updated Successfully","success")
       }
   
       // run this function due to chnaging input
@@ -34,7 +35,7 @@ function Notes() {
 
     return (
         <>
-            <AddNotes />
+            <AddNotes showAlert={props.showAlert}/>
 
             {/* to update the note using bootstapmodel  */}
             <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -80,7 +81,7 @@ function Notes() {
                 {notes.length===0 && "No Notes available to Display"}
                 </div>
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} updateNote={updateNote} note={note} />;
+                    return <NoteItem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert}/>;
                 })}
             </div>
         </>

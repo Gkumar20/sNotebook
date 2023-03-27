@@ -1,7 +1,7 @@
 import React, { useContext,useState } from 'react'
 import noteContext from "../context/notes/noteContext"
 
-function AddNotes() {
+function AddNotes(props) {
   const context = useContext(noteContext)
     const { addNotes} = context;
     const [note, setnote] = useState({title:"",description:"",tag:""})
@@ -12,6 +12,7 @@ function AddNotes() {
       // after changing notes it will addnotes in addnotes 
       addNotes(note.title,note.description,note.tag);
       setnote({title:"",description:"",tag:""})
+      props.showAlert("Notes added Successfully","success")
     }
 
     // run this function due to chnaging input
