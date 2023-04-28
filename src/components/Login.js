@@ -1,9 +1,10 @@
 import React,{useState} from 'react'
 import {  useNavigate} from "react-router-dom";
+import {host} from '../helper'
 
 
 const Login = (props) => {
-    const host = "http://localhost:5000";
+    // const host = "http://localhost:5000";
     const [auth, setauth] = useState({email:"",password:""})
     let navigate = useNavigate();
     const handleSubmit = async (e) => {
@@ -14,9 +15,7 @@ const Login = (props) => {
             headers: {
                 "Content-Type": "application/json",
             },
-
             body: JSON.stringify({email:auth.email,password:auth.password}),
-
         });
 
         const json = await response.json()

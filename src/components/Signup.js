@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import {host} from '../helper'
+
 
 function Signup(props) {
-    const host = "http://localhost:5000";
+    // const host = "http://localhost:5000";
     const [auth, setauth] = useState({ name: "", email: "", password: "", cpassword: "" })
     let navigate = useNavigate();
     const handleSubmit = async (e) => {

@@ -1,10 +1,12 @@
 import React from 'react';
 import NoteContext from './noteContext';
 import { useState } from 'react';
+import {host} from '../../helper'
+
 
 
 const NoteState = (props) => {
-  const host = "http://localhost:5000"
+  // const host = "http://localhost:5000"
   const fetchnote = [];
   const [notes, setNotes] = useState(fetchnote)
 
