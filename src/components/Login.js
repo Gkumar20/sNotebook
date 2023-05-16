@@ -62,29 +62,3 @@ const Login = (props) => {
 
 export default Login
 
-
-
-const [loading, setLoading] = useState(true);
-
-
-useEffect(() => {
-    const fetchData = async () => {
-        try {
-            await getAllUser();
-            setLoading(false);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    fetchData();
-}, [getAllUser]);
-
-if (loading) {
-    return <p>Loading...</p>; // Display a loading state while the data is being fetched
-}
-
-return (
-  // Rest of your component code
-);
-}
