@@ -4,10 +4,14 @@ import {host} from '../helper'
 
 
 function Signup(props) {
+    // const [loading, setLoading] = useState(false);
+
     // const host = "http://localhost:5000";
     const [auth, setauth] = useState({ name: "", email: "", password: "", cpassword: "" })
     let navigate = useNavigate();
     const handleSubmit = async (e) => {
+        // setLoading(true)
+
         e.preventDefault();
             const url = `${host}/api/auth/createuser`
             const response = await fetch(url, {
@@ -20,6 +24,8 @@ function Signup(props) {
 
             });
             const json = await response.json()
+            // setLoading(false)
+
             console.log(json)
             if (json.success) {
                 // redirect 
@@ -37,6 +43,9 @@ function Signup(props) {
         // auth remain but overrite the value with the input value 
         setauth({ ...auth, [element.target.name]: element.target.value })
     }
+    // if (loading) {
+    //     return <p>Loading...</p>; // Display a loading state while the data is being fetched
+    // }
     return (
         <div className='container '>
         <h2 className='text-center'>Create a New user to continue user sNotebook</h2>

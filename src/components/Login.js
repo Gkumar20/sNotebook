@@ -4,11 +4,12 @@ import { host } from '../helper'
 
 
 const Login = (props) => {
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     // const host = "http://localhost:5000";
     const [auth, setauth] = useState({ email: "", password: "" })
     let navigate = useNavigate();
     const handleSubmit = async (e) => {
+        // setLoading(true)
         e.preventDefault();
         const url = `${host}/api/auth/login`
         const response = await fetch(url, {
@@ -22,7 +23,7 @@ const Login = (props) => {
         const json = await response.json()
         console.log(json)
         localStorage.setItem('token', json.ClientToken);
-        setLoading(true)
+        // setLoading(false)
 
         if (json.success) {
             //Save auth token & redirect 
@@ -38,9 +39,9 @@ const Login = (props) => {
         setauth({ ...auth, [element.target.name]: element.target.value })
     }
 
-    if (loading) {
-        return <p>Loading...</p>; // Display a loading state while the data is being fetched
-    }
+    // if (loading) {
+    //     return <p>Loading...</p>; // Display a loading state while the data is being fetched
+    // }
     return (
         <div className='container '>
             <h2 className='text-center'>Login to continue user sNotebook</h2>
