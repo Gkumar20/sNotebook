@@ -4,7 +4,7 @@ import { host } from '../helper'
 
 
 const Login = (props) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     // const host = "http://localhost:5000";
     const [auth, setauth] = useState({ email: "", password: "" })
     let navigate = useNavigate();
@@ -22,7 +22,7 @@ const Login = (props) => {
         const json = await response.json()
         console.log(json)
         localStorage.setItem('token', json.ClientToken);
-        setLoading(false)
+        setLoading(true)
 
         if (json.success) {
             //Save auth token & redirect 
