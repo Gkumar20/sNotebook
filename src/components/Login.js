@@ -1,11 +1,12 @@
-import React,{useState} from 'react'
-import {  useNavigate} from "react-router-dom";
-import {host} from '../helper'
+import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
+import { host } from '../helper'
 
 
 const Login = (props) => {
+    const [loading, setLoading] = useState(true);
     // const host = "http://localhost:5000";
-    const [auth, setauth] = useState({email:"",password:""})
+    const [auth, setauth] = useState({ email: "", password: "" })
     let navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,32 +16,37 @@ const Login = (props) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({email:auth.email,password:auth.password}),
+            body: JSON.stringify({ email: auth.email, password: auth.password }),
         });
 
         const json = await response.json()
         console.log(json)
-        localStorage.setItem('token',json.ClientToken);
+        localStorage.setItem('token', json.ClientToken);
+        setLoading(false)
 
-        if(json.success){
+        if (json.success) {
             //Save auth token & redirect 
             navigate('/');
-            props.showAlert("Login Successfully","success")
-        }else{
-            props.showAlert("Login failed","danger")
+            props.showAlert("Login Successfully", "success")
+        } else {
+            props.showAlert("Login failed", "danger")
         }
     }
 
-    const onChange=(element)=>{
+    const onChange = (element) => {
         // note remain but overrite the value with the input value 
-        setauth({...auth, [element.target.name]: element.target.value})
-      }
+        setauth({ ...auth, [element.target.name]: element.target.value })
+    }
+
+    if (loading) {
+        return <p>Loading...</p>; // Display a loading state while the data is being fetched
+    }
     return (
         <div className='container '>
-        <h2 className='text-center'>Login to continue user sNotebook</h2>
+            <h2 className='text-center'>Login to continue user sNotebook</h2>
             <div className="mainui top-0 start-50 translate-middle-x">
                 <input type="checkbox" id="chk" aria-hidden="true" />
-                
+
                 <div className="login">
                     <form className="form" onSubmit={handleSubmit}>
                         <label htmlFor="chk" aria-hidden="true">Log in</label>
@@ -55,3 +61,30 @@ const Login = (props) => {
 }
 
 export default Login
+
+
+
+const [loading, setLoading] = useState(true);
+
+
+useEffect(() => {
+    const fetchData = async () => {
+        try {
+            await getAllUser();
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    fetchData();
+}, [getAllUser]);
+
+if (loading) {
+    return <p>Loading...</p>; // Display a loading state while the data is being fetched
+}
+
+return (
+  // Rest of your component code
+);
+}
